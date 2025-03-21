@@ -11,8 +11,16 @@ load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
+import os
+import pickle
 
-model = pickle.load(open("flight_price_prediction_model.pkl", "rb"))
+model_path = os.path.join(os.path.dirname(__file__), 'flight_price_prediction_model.pkl')
+
+if not os.path.isfile(model_path):
+    raise FileNotFoundError(f"Model file not found at {model_path}")
+
+model = pickle.load(open(model_path, "rb"))
+
 
 @app.route("/")
 @cross_origin()
